@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
@@ -20,35 +21,56 @@ app.get('/', (req, res) => {
 });
 
 // Get
-app.get('/users', async (req, res) => {
-  const res = await db.query(`SELECT * FROM guestbook`);
-  res.json(res.rows);
+app.get('/guestbook', async (req, res) => {
+  const result = await db.query(`
+  CREATE TABLE IF NOT EXISTS guestbook (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(16),
+    message VARCHAR(160)
+  );`);
+  res.json(res);
 });
 
 // Post
-app.post('/users', async (req, res) => {
+app.post('/guestbook', async (req, res) => {
   const { username, message } = req.body;
-  const res = await db.query(
-    `INSERT INTO guestbook (username, message) VALUES ($1, $2)`,
+  const result = await db.query(
+    `
+    INSERT INTO guestbook (username, message)
+    VALUES ($1, $2);
+    `,
     [username, message]
   );
-  res.json(res.rows);
+  res.json({ message: 'posted', res });
 });
 
 // Update
-app.put('/users/:id', async (req, res) => {
-  const { id } = req.params;
-  const { username, message } = req.body;
-  const res = await db.query(
-    `UPDATE guestbook SET username = $1, message = $2 WHERE id = $3`,
+app.put('/guestbook', async (req, res) => {
+  const { id, username, message } = req.body;
+  const result = await db.query(
+    `
+    UPDATE guestbook
+    SET username = $1, message = $2
+    WHERE id = $3;
+    `,
     [username, message, id]
   );
-  res.json(res.rows);
+  res.json({ message: 'updated', res });
 });
 
 // Delete
-app.delete('/users/:id', async (req, res) => {
-  const { id } = req.params;
-  const res = await db.query(`DELETE FROM guestbook WHERE id = $1`, [id]);
-  res.json(res.rows);
+app.delete('/guestbook', async (req, res) => {
+  const { id } = req.body;
+  const result = await db.query(
+    `
+    DELETE FROM guestbook
+    WHERE id = $1;
+    `,
+    [id]
+  );
+  res.json({ message: 'deleted', res });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on PORT ${PORT}`);
 });
