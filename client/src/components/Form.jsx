@@ -42,6 +42,7 @@ export default function Form() {
           type="text"
           id="username"
           name="username"
+          className="input"
           value={formData.username}
           onChange={handleChange}
           required
@@ -50,6 +51,7 @@ export default function Form() {
         <textarea
           id="message"
           name="message"
+          className="input"
           value={formData.message}
           onChange={handleChange}
           required
@@ -58,6 +60,7 @@ export default function Form() {
         <select
           id="category"
           name="category"
+          className="input"
           value={formData.category}
           onChange={handleChange}
         >
@@ -65,7 +68,9 @@ export default function Form() {
           <option value="2">Help</option>
           <option value="3">General</option>
         </select>
-        <button type="submit">Post</button>
+        <button className="submit" type="submit">
+          Post
+        </button>
       </form>
     </div>
   );

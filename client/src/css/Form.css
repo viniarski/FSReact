@@ -1,4 +1,28 @@
 .form {
   display: flex;
   flex-direction: column;
+  width: 400px;
+  gap: 5px;
+}
+
+.input {
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  resize: none;
+}
+
+.submit {
+  width: 60px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #be3144;
+  color: white;
+  margin-top: 1rem;
+}
+
+.submit:hover {
+  background-color: #872341;
 }
