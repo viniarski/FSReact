@@ -15,6 +15,7 @@ const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
+// Root Route
 app.get('/', (req, res) => {
   res.send('Root Route Guestbook');
 });
@@ -25,7 +26,7 @@ app.get('/guestbook', async (req, res) => {
     const result = await db.query('SELECT * FROM guestbook');
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json(error);
   }
 });
 
@@ -40,23 +41,7 @@ app.post('/guestbook', async (req, res) => {
     console.log('New entry added to guestbook');
     res.json({ message: 'Entry added successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Update
-app.put('/guestbook/:id', async (req, res) => {
-  const id = req.params.id;
-  const { username, message, category } = req.body;
-  try {
-    const result = await db.query(
-      'UPDATE guestbook SET username = $1, message = $2, category = $3 WHERE id = $4',
-      [username, message, category, id]
-    );
-    console.log('Entry updated successfully');
-    res.json({ message: 'Entry updated successfully' });
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json(error);
   }
 });
 
@@ -68,7 +53,7 @@ app.delete('/guestbook/:id', async (req, res) => {
     console.log('Entry deleted successfully');
     res.json({ message: 'Entry deleted successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json(error);
   }
 });
 

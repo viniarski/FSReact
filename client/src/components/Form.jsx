@@ -24,7 +24,6 @@ export default function Form() {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        console.log('Entry added successfully');
         setFormData({ username: '', message: '', category: '1' });
       } else {
         console.error('Failed to add entry:', response.statusText);
