@@ -18,13 +18,19 @@ const createTablesQuery = `
     id SERIAL PRIMARY KEY,
     username VARCHAR(16),
     message VARCHAR(255),
-    category INT references postCategories (id)
+    category INT references postCategories (id) ON DELETE CASCADE
   );
+
+  -- Create foreign key constraint
+  ALTER TABLE guestbook
+  ADD CONSTRAINT fk_category
+  FOREIGN KEY (category)
+  REFERENCES postCategories(id);
 `;
 
-// Seed
 db.query(createTablesQuery)
   .then(() => {
+    // Insert default categories after tables are created
     const insertCategoriesQuery = `
       INSERT INTO postCategories (postCategory) VALUES 
       ('Greetings'),
