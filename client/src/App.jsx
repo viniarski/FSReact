@@ -8,11 +8,15 @@ import NotFound from './components/NotFound';
 
 export default function App() {
   return (
-    <div>
+    <div className="body">
       <Header />
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
+      <nav className="nav">
+        <Link className="link" to="/">
+          Home
+        </Link>
+        <Link className="link" to="/about">
+          About
+        </Link>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />

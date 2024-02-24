@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background-color: #22092c;
+  color: #f05941;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 60px;
+  gap: 20px;
+}
+
+.link {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: #be3144;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: #872341;
+}

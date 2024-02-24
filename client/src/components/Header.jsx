@@ -1,7 +1,9 @@
+import '../css/Header.css';
+
 export default function Header() {
   return (
     <header>
-      <h1>GUESTBOOK</h1>
+      <h1 className="header">GUESTBOOK</h1>
     </header>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../css/Form.css';
 
 export default function Form() {
   const [formData, setFormData] = useState({
@@ -35,7 +36,7 @@ export default function Form() {
 
   return (
     <div className="container">
-      <form onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <label htmlFor="username">Username</label>
         <input
           type="text"
