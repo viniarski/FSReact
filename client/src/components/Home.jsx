@@ -1,3 +1,9 @@
+import Form from './Form';
+
 export default function Home() {
-  return <div></div>;
+  return (
+    <div>
+      <Form />
+    </div>
+  );
 }
