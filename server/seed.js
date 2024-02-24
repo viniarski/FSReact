@@ -28,9 +28,9 @@ const createTablesQuery = `
   REFERENCES postCategories(id);
 `;
 
+// Seed
 db.query(createTablesQuery)
   .then(() => {
-    // Insert default categories after tables are created
     const insertCategoriesQuery = `
       INSERT INTO postCategories (postCategory) VALUES 
       ('Greetings'),
