@@ -15,62 +15,60 @@ const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-// Set up root route
-app.get('/', (req, res) => {
-  res.send('Root route');
-});
-
 // Get
 app.get('/guestbook', async (req, res) => {
-  const result = await db.query(`
-  CREATE TABLE IF NOT EXISTS guestbook (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(16),
-    message VARCHAR(160)
-  );`);
-  res.json(res);
+  try {
+    const result = await db.query('SELECT * FROM guestbook');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 // Post
 app.post('/guestbook', async (req, res) => {
   const { username, message } = req.body;
-  const result = await db.query(
-    `
-    INSERT INTO guestbook (username, message)
-    VALUES ($1, $2);
-    `,
-    [username, message]
-  );
-  res.json({ message: 'posted', res });
+  try {
+    const result = await db.query(
+      'INSERT INTO guestbook (username, message) VALUES ($1, $2)',
+      [username, message]
+    );
+    res.json({ message: 'Entry added successfully' });
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 // Update
-app.put('/guestbook', async (req, res) => {
-  const { id, username, message } = req.body;
-  const result = await db.query(
-    `
-    UPDATE guestbook
-    SET username = $1, message = $2
-    WHERE id = $3;
-    `,
-    [username, message, id]
-  );
-  res.json({ message: 'updated', res });
+app.put('/guestbook/:id', async (req, res) => {
+  const id = req.params.id;
+  const { username, message } = req.body;
+  try {
+    const result = await db.query(
+      'UPDATE guestbook SET username = $1, message = $2 WHERE id = $3',
+      [username, message, id]
+    );
+    res.json({ message: 'Entry updated successfully' });
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 // Delete
-app.delete('/guestbook', async (req, res) => {
-  const { id } = req.body;
-  const result = await db.query(
-    `
-    DELETE FROM guestbook
-    WHERE id = $1;
-    `,
-    [id]
-  );
-  res.json({ message: 'deleted', res });
+app.delete('/guestbook/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await db.query('DELETE FROM guestbook WHERE id = $1', [id]);
+    res.json({ message: 'Entry deleted successfully' });
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on PORT ${PORT}`);
+  console.log(`Server is running on PORT ${PORT}`);
 });
