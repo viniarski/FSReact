@@ -1,19 +1,17 @@
 import express from 'express';
 import cors from 'cors';
-import pg from 'pg';
 import dotenv from 'dotenv';
+
+import { connect } from './connect.js';
 
 dotenv.config();
 
 const app = express();
+const db = connect();
 const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
-
-const db = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
-});
 
 // Root Route
 app.get('/', (req, res) => {
