@@ -1,35 +1,23 @@
 import React, { useState } from 'react';
-import '../css/Form.css';
+import '../css/PostForm.css';
 
-export default function Form() {
-  const [formData, setFormData] = useState({
-    username: '',
-    message: '',
-    category: '1',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+export default function PostForm() {
+  const [username, setUsername] = useState('');
+  const [message, setMessage] = useState('');
+  const [category, setCategory] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/guestbook', {
+      await fetch('/guestbook', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ username, message, category }),
       });
-      if (response.ok) {
-        setFormData({ username: '', message: '', category: '1' });
-      } else {
-        console.error('Failed to add entry:', response.statusText);
-      }
     } catch (error) {
-      console.error('Error adding entry:', error.message);
+      console.error('Error creating post', error);
     }
   };
 
@@ -42,8 +30,8 @@ export default function Form() {
           id="username"
           name="username"
           className="input"
-          value={formData.username}
-          onChange={handleChange}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
         />
         <label htmlFor="message">Message</label>
@@ -51,8 +39,8 @@ export default function Form() {
           id="message"
           name="message"
           className="input"
-          value={formData.message}
-          onChange={handleChange}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           required
         ></textarea>
         <label htmlFor="category">Category</label>
@@ -60,8 +48,8 @@ export default function Form() {
           id="category"
           name="category"
           className="input"
-          value={formData.category}
-          onChange={handleChange}
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
         >
           <option value="1">Greetings</option>
           <option value="2">Help</option>
